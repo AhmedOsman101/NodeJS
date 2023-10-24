@@ -10,7 +10,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "test.js": "^1.0.0"
+        "test.js": "^1.0.0",
+        "ts-node": "^10.9.1"
     },
     "devDependencies": {
         "nodemon": "^3.0.1"
