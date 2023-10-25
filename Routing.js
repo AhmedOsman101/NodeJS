@@ -1,3 +1,4 @@
+const { readFileSync } = require("fs");
 const http = require("http");
 
 const API = [
@@ -26,17 +27,27 @@ const API = [
         gender: "male",
     },
 ];
-
+const form = readFileSync("./index.html");
 const server = http.createServer((req, res) => {
     if (req.method === "GET") {
         if (req.url === "/") {
-            res.end(`${JSON.stringify(API)}`);
+            res.end(form);
         } else {
-            res.end("<h1 font='80'>ERROR404 - PAGE NOT FOUND</h1>");
+            res.end("<h1>ERROR404 - PAGE NOT FOUND</h1>");
+        }
+    } else if (req.method === "POST") {
+        if (req.url === "/done") {
+            req.on("data", (chunk) => {
+                API.push(JSON.parse(chunk));
+                console.log(API);
+            });
+            res.end(JSON.stringify(API));
         }
     }
 });
 
-server.listen(3000, () => {
-    console.log("server is running on port: http://localhost:3000/");
+const port = 3001;
+server.listen(port, () => {
+    console.log(`server is running on port: http://localhost:${port}/`);
+    console.log(API);
 });
