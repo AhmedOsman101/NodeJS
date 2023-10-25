@@ -9,7 +9,9 @@ const methods = {
         return num * multi;
     },
     divide: function (num, divider) {
-        return num / divider;
+        if (divider != 0) {
+            return num / divider;
+        } else return "Error - Invalid Divider";
     },
     power: function (num, power) {
         return num ** power;
