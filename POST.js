@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 
+const PORT = 3000;
 const API = [
     {
         id: 1,
@@ -24,41 +25,32 @@ const API = [
         id: 4,
         name: "3wees",
         age: 17,
-        gender: "male",
+        gender: "email",
     },
 ];
+const home = fs.readFile("./index.html");
 
-const server = http.createServer((req, res) => {
+createServer((req, res) => {
+    var data = "";
     if (req.method === "GET") {
-        fs.readFile("./index.html", (err, data) => {
-            if (err) {
-                res.writeHead(404);
-                res.end(JSON.stringify(err));
-                return;
-            }
-            res.writeHead(200);
-            res.end(data);
-        });
+        if (req.url === "/form") {
+            res.end(home);
+        }
     } else if (req.method === "POST") {
-        let body = "";
         req.on("data", (chunk) => {
-            body += chunk.toString(); // convert Buffer to string
+            data += chunk; // convert Buffer to string
         });
         req.on("end", () => {
-            const postData = JSON.parse(body);
+            let newData = data.split("&");
+            let obj = {};
+            for (let i = 0; i < array.length; i++) {
+                let keyVal = array[i];
+                obj[keyVal[0]] = keyVal[1];
+            }
+            // const postData = JSON.parse(data);
             console.log(postData);
-
-            // You can now handle the form data as per your application logic
-            // For example, let's add the new data to the API
-            API.push(postData);
-
-            res.end("POST request handled");
+            // API.push(postData);
+            res.end(JSON.stringify(newData));
         });
-    } else {
-        res.end("Invalid request");
     }
-});
-
-const PORT = 3000;
-
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).listen(PORT, () => console.log(`Server running on port ${PORT}`));
