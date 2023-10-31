@@ -18,7 +18,7 @@ http.createServer((req, res) => {
         });
         req.on("end", () => {
             let newData = data.split("&");
-            let obj = {};
+            let obj = Object ;
             for (let i = 0; i < newData.length; i++) {
                 let valueKey = newData[i].split("=");
                 obj[valueKey[0]] = valueKey[1];
