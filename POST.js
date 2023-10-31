@@ -1,30 +1,51 @@
+// Import the required modules
 const http = require("http");
 const fs = require("fs");
-const GenUsers = require("./GenerateUsers");
-const port = 5000;
-const formContent = fs.readFileSync("./form.html");
 
-let Users = [];
-GenUsers.generateData(Users, 10);
+// Define the port on which the server will listen
+const port = 5055;
 
+// Read the form file
+const form = fs.readFileSync("./index.html", "utf8");
+
+
+// Create a new HTTP server
 http.createServer((req, res) => {
-    var data = "";
-    if (req.url === "/form" && req.method === "GET") {
-        res.end(formContent);
-    } else if (req.url === "/adduser" && req.method === "POST") {
-        req.on("data", (chunck) => {
-            data += chunck;
-        });
-        req.on("end", () => {
-            let newData = data.split("&");
-            let obj = Object;
-            for (let i = 0; i < newData.length; i++) {
-                let valueKey = newData[i].split("=");
-                obj[valueKey[0]] = valueKey[1];
-            }
-            res.end(JSON.stringify(obj));
-        });
-    }
+	var data = "";
+
+	// If a GET request is made to "/form", return the form file
+	if (req.url === "/form" && req.method === "GET") {
+		res.end(form);
+	}
+	// If a POST request is made to "/addUser", handle the new user data
+	else if (req.url === "/addUser" && req.method === "POST") {
+		// Listen for data events, which are sent when a chunk of data is available to read
+		req.on("data", (chunk) => {
+			data += chunk;
+		});
+
+		// Listen for the end event, which is sent when all request data has been read
+		req.on("end", () => {
+			// Split the POST data into key-value pairs
+			let newData = data.split("&");
+			let obj = {};
+			newData.forEach((item) => {
+				let valueKey = item.split("=");
+				obj[valueKey[0]] = valueKey[1];
+			});
+
+			// Send back the updated data as a JSON string
+			res.end(JSON.stringify(obj));
+
+			/*  other way (using querystring module):
+            const querystring = require("querystring");
+            let newData = querystring.parse(data);
+            res.end(JSON.stringify(newData));
+             */
+		});
+	}
+
+	// Start the server and have it listen on the specified port
 }).listen(port, () => {
-    console.log("running");
+	console.log(`server is running http://localhost:${port}/form`);
 });

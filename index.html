@@ -1,41 +1,36 @@
 <!DOCTYPE html>
-<html>
-    <body>
-        <h2>HTML Form</h2>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<h2>HTML Form</h2>
 
-        <form id="apiForm" action="/addUser">
-            <label for="id">ID:</label><br />
-            <input type="text" id="id" name="id" required /><br />
-            <label for="name">Name:</label><br />
-            <input type="text" id="name" name="name" required /><br />
-            <label for="age">Age:</label><br />
-            <input type="number" id="age" name="age" required /><br />
-            <label for="gender">Gender:</label><br />
-            <input type="text" id="gender" name="gender" required /><br /><br />
-            <input type="submit" value="Submit" />
-        </form>
+		<form action="/addUser" method="post">
+			<label>Username:</label><br />
+			<input type="text" name="username" /><br />
 
-        <script>
-            document
-                .getElementById("apiForm")
-                .addEventListener("submit", function (event) {
-                    event.preventDefault();
+			<label>Email:</label><br />
+			<input type="email" name="email" /><br />
 
-                    const id = document.getElementById("id").value;
-                    const name = document.getElementById("name").value;
-                    const age = document.getElementById("age").value;
-                    const gender = document.getElementById("gender").value;
+			<label>Phone:</label><br />
+			<!-- 
+                type="tel" => input type for phone numbers
+                pattern attribute => makes the user enter data in a specific way.
+                [0-9] => input accepts only numbers from 0 to 9 
+            -->
+			<input
+				type="tel"
+				pattern="[0-9]{3,}"
+				name="phone_number"
+			/><br />
 
-                    const data = { id, name, age, gender };
+			<label>Password:</label><br />
+			<input type="password" name="password" /><br /><br />
 
-                    fetch("/api/objects", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(data),
-                    });
-                });
-        </script>
-    </body>
+			<input type="submit" value="Submit" />
+		</form>
+	</body>
 </html>

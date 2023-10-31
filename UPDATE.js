@@ -4,7 +4,7 @@ const GenUsers = require("./GenerateUsers");
 const port = 5001;
 let Users = [];
 GenUsers.generateData(Users, 10);
-
+console.log(Users);
 http.createServer((req, res) => {
 	var data = "";
 	if (req.url.startsWith("/Update/User/") && req.method === "PUT") {
