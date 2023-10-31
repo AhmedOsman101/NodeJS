@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require("fs");
+const form = fs.readFileSync("./index.html", "utf8");
 let Users = [
     {
         id: 1,
@@ -51,13 +53,31 @@ let Users = [
         age: 26,
     },
 ];
-const port = 5002;
 
 const App = express();
-App.use(express.json);
+App.use(express.urlencoded({ extended: true }));
 
-App.get("/")
+App.delete("/User/:id", (req, res) => {
+    let userId = +req.url.split("/").at(-1);
+    let userIndex = Users.findIndex((user) => {
+        return userId === user.id;
+    });
 
-App.listen(port, ()=>{
+    if (userIndex !== -1) {
+        Users.splice(userIndex, 1)
+        res.send(Users)
+    } else {
+        res.send("User Is Not Found !!!")
+    }
+});
+
+
+App.use((req, res) => {
+    res.end("User Not Found");
+});
+
+const port = 1297;
+
+App.listen(port, () => {
     console.log("done");
-})
+});
