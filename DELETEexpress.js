@@ -2,14 +2,13 @@ const express = require("express");
 const fs = require("fs");
 const GenUsers = require("./GenerateUsers");
 
-const form = fs.readFileSync("./index.html", "utf8");
 const port = 5002;
 const App = express();
 let Users = [];
 
 GenUsers.generateData(Users, 10);
 
-App.use(express.urlencoded({ extended: true }));
+App.use(express.json());
 
 App.delete("/User/:id", (req, res) => {
 	let userId = +req.url.split("/").at(-1);
