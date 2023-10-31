@@ -57,26 +57,40 @@ let Users = [
 http.createServer((req, res) => {
     var data = "";
     if (req.url.startsWith("/Update/User/") && req.method === "PUT") {
+        // Extracting the user ID from the request URL
         let userID = req.url.split("/").at(-1);
+
+        // Finding the user index in the Users array based on the ID
         const userIndex = Users.findIndex((user) => {
             return +userID === user.id;
         });
+
         if (userIndex == -1) {
-            res.end("user not found");
+            // If the user is not found
+            res.end("User not found");
         } else {
-            req.on("data", (chunck) => {
-                data += chunck;
+            // If the user is found
+            req.on("data", (chunk) => {
+                // Accumulating the received data
+                data += chunk;
                 console.log(JSON.stringify(data));
             });
 
             req.on("end", () => {
+                // Parsing the received data
                 let newData = JSON.parse(data);
+
+                // Updating the user's name if provided, else keeping the original name
                 Users[userIndex].name = newData.name || Users[userIndex].name;
+
+                // Updating the user's age if provided, else keeping the original age
                 Users[userIndex].age = newData.age || Users[userIndex].age;
+
+                // Sending the updated Users array as the response
                 res.end(JSON.stringify(Users));
             });
         }
     }
 }).listen(port, () => {
-    console.log(`server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
