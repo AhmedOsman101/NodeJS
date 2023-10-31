@@ -1,56 +1,31 @@
 const http = require("http");
 const fs = require("fs");
+const formContent = fs.readFileSync("./form.html");
 
-const PORT = 3000;
-const API = [
-    {
-        id: 1,
-        name: "Othman",
-        age: 18,
-        gender: "male",
-    },
-    {
-        id: 2,
-        name: "Adam",
-        age: 18,
-        gender: "male",
-    },
-    {
-        id: 3,
-        name: "Amir Sal3at",
-        age: 16,
-        gender: "female",
-    },
-    {
-        id: 4,
-        name: "3wees",
-        age: 17,
-        gender: "email",
-    },
+let Users = [
+    { id: 1, name: "ahmed", age: 16 },
+    { id: 2, name: "mohamed", age: 40 },
+    { id: 3, name: "mustafa", age: 30 },
 ];
-const home = fs.readFile("./index.html");
 
-createServer((req, res) => {
+http.createServer((req, res) => {
     var data = "";
-    if (req.method === "GET") {
-        if (req.url === "/form") {
-            res.end(home);
-        }
-    } else if (req.method === "POST") {
-        req.on("data", (chunk) => {
-            data += chunk; // convert Buffer to string
+    if (req.url === "/form" && req.method === "GET") {
+        res.end(formContent);
+    } else if (req.url === "/adduser" && req.method === "POST") {
+        req.on("data", (chunck) => {
+            data += chunck;
         });
         req.on("end", () => {
             let newData = data.split("&");
-            let obj = {};
-            for (let i = 0; i < array.length; i++) {
-                let keyVal = array[i];
-                obj[keyVal[0]] = keyVal[1];
+            let obj = Object;
+            for (let i = 0; i < newData.length; i++) {
+                let valueKey = newData[i].split("=");
+                obj[valueKey[0]] = valueKey[1];
             }
-            // const postData = JSON.parse(data);
-            console.log(postData);
-            // API.push(postData);
-            res.end(JSON.stringify(newData));
+            res.end(JSON.stringify(obj));
         });
     }
-}).listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).listen(5000, () => {
+    console.log("running");
+});

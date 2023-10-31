@@ -2,10 +2,10 @@
     "name": "othman",
     "version": "1.0.0",
     "description": "",
-    "main": "test.js",
+    "main": "DELETE.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon POST.js"
+        "start": "nodemon DELETE.js"
     },
     "author": "",
     "license": "ISC",
