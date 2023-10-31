@@ -3,7 +3,7 @@ const http = require("http");
 const fs = require("fs");
 
 // Define the port on which the server will listen
-const port = 5055;
+const port = 5003;
 
 // Read the form file
 const form = fs.readFileSync("./index.html", "utf8");

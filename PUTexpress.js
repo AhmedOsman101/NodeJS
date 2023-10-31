@@ -1,8 +1,8 @@
 const express = require("express");
 const fs = require("fs");
 const GenUsers = require("./GenerateUsers");
-const form = fs.readFileSync("./index.html", "utf8");
 
+const port = 5006;
 let Users = [];
 GenUsers.generateData(Users, 10);
 
@@ -28,8 +28,7 @@ App.use((req, res) => {
 	res.end("User Not Found");
 });
 
-const port = 1295;
 
 App.listen(port, () => {
-	console.log("done");
+	console.log(`Server is running on http://localhost:${port}`);
 });

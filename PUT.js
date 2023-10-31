@@ -1,7 +1,7 @@
 const http = require("http");
 const GenUsers = require("./GenerateUsers");
 
-const port = 5001;
+const port = 5005;
 let Users = [];
 GenUsers.generateData(Users, 10);
 
