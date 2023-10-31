@@ -4,7 +4,7 @@ const GenUsers = require("./GenerateUsers");
 const port = 5001;
 let Users = [];
 GenUsers.generateData(Users, 10);
-console.log(Users);
+
 http.createServer((req, res) => {
 	var data = "";
 	if (req.url.startsWith("/Update/User/") && req.method === "PUT") {
@@ -22,9 +22,8 @@ http.createServer((req, res) => {
 		} else {
 			// If the user is found
 			req.on("data", (chunk) => {
-				// Accumulating the received data
+				// adding the received data
 				data += chunk;
-				// console.log(JSON.stringify(data));
 			});
 
 			req.on("end", () => {

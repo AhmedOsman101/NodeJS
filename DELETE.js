@@ -17,7 +17,6 @@ http.createServer((req, res) => {
 			Users.splice(userIndex, 1);
 			res.end(JSON.stringify(Users));
 		}
-	} else if (req.url.startsWith("/Update/User/") && req.method === "PUT") {
 	}
 }).listen(port, () => {
 	console.log(`server is running on http://localhost:${port}`);
