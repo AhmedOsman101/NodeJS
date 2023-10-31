@@ -2,16 +2,12 @@
 const http = require("http");
 const fs = require("fs");
 
-// Define the port on which the server will listen
-const port = 5003;
-
-// Read the form file
-const form = fs.readFileSync("./index.html", "utf8");
-
+const port = 5003; // the port on which the server will listen
+const form = fs.readFileSync("./index.html", "utf8"); // Read the form file
 
 // Create a new HTTP server
 http.createServer((req, res) => {
-	var data = "";
+	var data = ""; // empty string to store the data
 
 	// If a GET request is made to "/form", return the form file
 	if (req.url === "/form" && req.method === "GET") {
@@ -34,17 +30,15 @@ http.createServer((req, res) => {
 				obj[valueKey[0]] = valueKey[1];
 			});
 
-			// Send back the updated data as a JSON string
-			res.end(JSON.stringify(obj));
+			res.end(JSON.stringify(obj)); // Send back the updated data as a JSON string
 
 			/*  other way (using querystring module):
-            const querystring = require("querystring");
-            let newData = querystring.parse(data);
-            res.end(JSON.stringify(newData));
+            const querystring = require("querystring"); 
+            let newData = querystring.parse(data); 
+            res.end(JSON.stringify(newData)); 
              */
 		});
 	}
-
 	// Start the server and have it listen on the specified port
 }).listen(port, () => {
 	console.log(`server is running http://localhost:${port}/form`);

@@ -18,17 +18,15 @@ http.createServer((req, res) => {
 
 		if (userIndex == -1) {
 			// If the user is not found
-			res.end("User not found");
+			res.end("User Doesn't Exist !!!"); // Send back an error message as a response
 		} else {
 			// If the user is found
 			req.on("data", (chunk) => {
-				// adding the received data
-				data += chunk;
+				data += chunk; // adding the received data
 			});
 
 			req.on("end", () => {
-				// Parsing the received data
-				let newData = JSON.parse(data);
+				let newData = JSON.parse(data); // Parsing the received data
 
 				// Updating the user's data if provided, else keeping the original data
 				Users[userIndex].username =
@@ -40,8 +38,7 @@ http.createServer((req, res) => {
 				Users[userIndex].phone_number =
 					newData.phone_number || Users[userIndex].phone_number;
 
-				// Sending the updated Users array as the response
-				res.end(JSON.stringify(Users));
+				res.end(JSON.stringify(Users)); // Sending the updated Users array as the response
 			});
 		}
 	}

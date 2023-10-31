@@ -2,21 +2,15 @@
 const http = require("http");
 const GenUsers = require("./GenerateUsers");
 
-// Define the port on which the server will listen
-const port = 5001;
-
-// create an empty array to hold the users
-let Users = [];
-
-// Generate mock data for 10 users using the GenUsers module
-GenUsers.generateData(Users, 10);
+const port = 5001; // the port on which the server will listen
+let Users = []; // create an empty array to hold the users
+GenUsers.generateData(Users, 10); // Generate mock data for 10 users using the GenUsers module
 
 // Create a new HTTP server
 http.createServer((req, res) => {
 	// If a DELETE request is made to "/Delete/User/{id}", delete the user with the given id
 	if (req.url.startsWith("/Delete/User/") && req.method === "DELETE") {
-		// Extract the user id from the URL
-		let userId = +req.url.split("/").at(-1);
+		let userId = +req.url.split("/").at(-1); // Extract the user id from the URL
 
 		// Find the index of the user with the given id
 		let userIndex = Users.findIndex((user) => {
@@ -25,7 +19,7 @@ http.createServer((req, res) => {
 
 		// If the user was not found, send an error message
 		if (userIndex === -1) {
-			res.end("User Is Not Found");
+			res.end("User Doesn't Exist !!!"); // Send back an error message as a response
 		}
 		// Otherwise, delete the user and send back the updated Users array as a JSON string
 		else {

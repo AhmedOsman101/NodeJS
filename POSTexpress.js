@@ -29,7 +29,7 @@ App.post("/addUser", (req, res) => {
 
 // handle any other requests
 App.use((req, res) => {
-	res.end("User Not Found"); // Send back an error message as a response
+	res.end("ERROR-404 Page Was Not Found"); // Send back an error message as a response
 });
 
 // Start the server and have it listen on the specified port

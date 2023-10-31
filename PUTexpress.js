@@ -28,7 +28,6 @@ App.use((req, res) => {
 	res.end("User Not Found");
 });
 
-
 App.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`);
 });
