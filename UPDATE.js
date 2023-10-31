@@ -32,10 +32,14 @@ http.createServer((req, res) => {
 				let newData = JSON.parse(data);
 
 				// Updating the user's data if provided, else keeping the original data
-				Users[userIndex].username =	newData.username || Users[userIndex].username;
-				Users[userIndex].email = newData.email || Users[userIndex].email;
-				Users[userIndex].password =	newData.password || Users[userIndex].password;
-				Users[userIndex].phone_number =	newData.phone_number || Users[userIndex].phone_number;
+				Users[userIndex].username =
+					newData.username || Users[userIndex].username;
+				Users[userIndex].email =
+					newData.email || Users[userIndex].email;
+				Users[userIndex].password =
+					newData.password || Users[userIndex].password;
+				Users[userIndex].phone_number =
+					newData.phone_number || Users[userIndex].phone_number;
 
 				// Sending the updated Users array as the response
 				res.end(JSON.stringify(Users));
