@@ -1,5 +1,5 @@
 const http = require("http");
-const port = 5000;
+const port = 5001;
 
 let Users = [
     {
@@ -55,20 +55,28 @@ let Users = [
 ];
 
 http.createServer((req, res) => {
-    if (req.url.startsWith("/Delete/User/") && req.method === "DELETE") {
-        let userId = +req.url.split("/").at(-1);
-        let userIndex = Users.findIndex((user) => {
-            return userId === user.id;
+    var data = "";
+    if (req.url.startsWith("/Update/User/") && req.method === "PUT") {
+        let userID = req.url.split("/").at(-1);
+        const userIndex = Users.findIndex((user) => {
+            return +userID === user.id;
         });
-        if (userIndex === -1) {
-            res.end("User Is Not Found");
+        if (userIndex == -1) {
+            res.end("user not found");
         } else {
-            Users.splice(userIndex, 1);
-            res.end(JSON.stringify(Users));
+            req.on("data", (chunck) => {
+                data += chunck;
+                console.log(JSON.stringify(data));
+            });
+
+            req.on("end", () => {
+                let newData = JSON.parse(data);
+                Users[userIndex].name = newData.name || Users[userIndex].name;
+                Users[userIndex].age = newData.age || Users[userIndex].age;
+                res.end(JSON.stringify(Users));
+            });
         }
-    }else if (req.url.startsWith("/Update/User/") && req.method === "PUT"){
-        
     }
 }).listen(port, () => {
     console.log(`server is running on http://localhost:${port}`);
-}); 
+});
