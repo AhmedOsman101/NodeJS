@@ -2,6 +2,8 @@
 const sql = require("mysql2");
 const express = require("express");
 const port = 5004; // the port on which the server will start
+const fs = require("fs");
+const form = fs.readFileSync("./index.html", "utf8"); // Read the form file
 
 const App = express(); // Create a new Express application
 App.use(express.json()); // Use express.json() middleware for parsing JSON data of incoming requests
@@ -23,6 +25,7 @@ App.get("/", (req, res) => {
         }
     });
 });
+
 // Handle GET requests to "/" URL
 App.get("/User/:id", (req, res) => {
     const userID = req.params.id;
@@ -37,14 +40,28 @@ App.get("/User/:id", (req, res) => {
 });
 
 // Handle GET requests to "/" URL
-App.post("/User/:id", (req, res) => {
-    const userID = req.params.id;
-    const query = "SELECT * FROM `users` WHERE id=" + userID;
-    connection.execute(query, (err, data) => {
+App.get("/form", (req, res) => {
+    res.send(form);
+});
+
+// Handle POST requests to "/User/post" URL
+App.post("/User/post", (req, res) => {
+    const userData = req.body;
+    const query =
+        "INSERT INTO `users`(`username`, `email`, `password`) VALUES (?, ?, ?)";
+    const values = [userData.username, userData.email, userData.password];
+
+    connection.execute(query, values, (err, data) => {
         if (err) {
             res.send(`ERROR: ${err}`);
         } else {
-            res.send(data);
+            connection.execute("SELECT * FROM `users`", (err, data) => {
+                if (err) {
+                    res.send(`ERROR: ${err}`);
+                } else {
+                    res.send(data);
+                }
+            });
         }
     });
 });
