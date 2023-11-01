@@ -1,7 +1,8 @@
 // Import the required modules
 const express = require("express");
 const sql = require("mysql2");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
+const cors = require('cors');
 const port = 5010; // the port on which the server will start
 
 const App = express(); // Create a new Express application
@@ -30,7 +31,7 @@ App.get("/", (req, res) => {
 App.get("/User/:id", (req, res) => {
 	const userID = req.params.id;
 	const query = "SELECT * FROM `users` WHERE id = ?";
-	connection.execute(query, [userID] ,(err, data) => {
+	connection.execute(query, [userID], (err, data) => {
 		if (err) {
 			res.send(`ERROR: ${err}`);
 		} else {
@@ -40,9 +41,9 @@ App.get("/User/:id", (req, res) => {
 });
 
 // Handle POST requests to add users
-App.post("/User/post", (req, res) => {
-	const {username, email, password} = req.body;
-    console.log(req.body)
+App.post("/User/Add", (req, res) => {
+	const { username, email, password } = req.body;
+	console.log(req.body);
 	const query =
 		"INSERT INTO `users`(`username`, `email`, `password`) VALUES (?, ?, ?)";
 	const values = [username, email, password];
