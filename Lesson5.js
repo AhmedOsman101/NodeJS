@@ -50,7 +50,6 @@ App.post("/User/post", (req, res) => {
     const query =
         "INSERT INTO `users`(`username`, `email`, `password`) VALUES (?, ?, ?)";
     const values = [userData.username, userData.email, userData.password];
-
     connection.execute(query, values, (err, data) => {
         if (err) {
             res.send(`ERROR: ${err}`);
