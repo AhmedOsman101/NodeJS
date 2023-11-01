@@ -35,8 +35,6 @@ http.createServer((req, res) => {
 					newData.email || Users[userIndex].email;
 				Users[userIndex].password =
 					newData.password || Users[userIndex].password;
-				Users[userIndex].phone_number =
-					newData.phone_number || Users[userIndex].phone_number;
 
 				res.end(JSON.stringify(Users)); // Sending the updated Users array as the response
 			});

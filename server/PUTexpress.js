@@ -25,8 +25,6 @@ App.put("/Update/User/:id", (req, res) => {
 		Users[userIndex].username = data.username || Users[userIndex].username;
 		Users[userIndex].email = data.email || Users[userIndex].email;
 		Users[userIndex].password = data.password || Users[userIndex].password;
-		Users[userIndex].phone_number =
-			data.phone_number || Users[userIndex].phone_number;
 
 		// Send back the updated Users array as a response
 		res.json(Users);
