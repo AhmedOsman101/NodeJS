@@ -1,21 +1,61 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "../assets/styles/form.css";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 export default function Form() {
+	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		const user = { username, email, password };
+		try {
+			const response = await axios.post(
+				"http://localhost:5010/User/Add",
+				user
+			);
+			if (response.data === "ERROR: this mail exists") {
+				MySwal.fire({
+					icon: "error",
+					title: "Failed To Create Account",
+					text: "This Mail Already Exists!",
+				});
+			} else {
+				MySwal.fire({
+					title: <strong>Succeed!</strong>,
+					html: <i>Your account is all set up 👌</i>,
+					icon: "success",
+				});
+			}
+			setUsername("");
+			setEmail("");
+			setPassword("");
+		} catch (error) {
+			console.error("There was an error!", error);
+		}
+	};
+
 	return (
 		<>
 			<div className="login-box">
-				<form action="http://localhost:5010/User/Add" method="post">
+				<form onSubmit={handleSubmit}>
 					<center>
-						<h1 className="title">Login</h1>
+						<h1 className="title">Sign Up</h1>
 					</center>
 					<div className="user-box">
 						<input
 							type="text"
 							name="username"
-							required=""
+							required
 							placeholder=" "
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
 						/>
 						<label>Username</label>
 					</div>
@@ -23,8 +63,10 @@ export default function Form() {
 						<input
 							type="email"
 							name="email"
-							required=""
+							required
 							placeholder=" "
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<label>Email</label>
 					</div>
@@ -32,8 +74,10 @@ export default function Form() {
 						<input
 							type="password"
 							name="password"
-							required=""
+							required
 							placeholder=" "
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<label>Password</label>
 					</div>

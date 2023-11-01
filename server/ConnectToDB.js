@@ -2,12 +2,12 @@
 const express = require("express");
 const sql = require("mysql2");
 // const bodyParser = require("body-parser");
-const cors = require('cors');
+const cors = require("cors");
 const port = 5010; // the port on which the server will start
 
 const App = express(); // Create a new Express application
 App.use(express.json()); // Use express.json() middleware for parsing JSON data of incoming requests
-
+App.use(cors());
 const connection = sql.createConnection({
 	host: "localhost",
 	user: "root",
@@ -41,21 +41,30 @@ App.get("/User/:id", (req, res) => {
 });
 
 // Handle POST requests to add users
+// Handle POST requests to add users
 App.post("/User/Add", (req, res) => {
 	const { username, email, password } = req.body;
-	console.log(req.body);
-	const query =
-		"INSERT INTO `users`(`username`, `email`, `password`) VALUES (?, ?, ?)";
 	const values = [username, email, password];
-	connection.execute(query, values, (err, data) => {
+	let query = "SELECT email FROM `users` WHERE `email` = ?";
+	connection.execute(query, [email], (err, data) => {
 		if (err) {
 			res.send(`ERROR: ${err}`);
+		} else if (0 < data.length) {
+			res.send("ERROR: this mail exists");
 		} else {
-			connection.execute("SELECT * FROM `users`", (err, data) => {
+			query =
+				"INSERT INTO `users`(`username`, `email`, `password`) VALUES (?, ?, ?)";
+			connection.execute(query, values, (err, data) => {
 				if (err) {
 					res.send(`ERROR: ${err}`);
 				} else {
-					res.send(data);
+					connection.execute("SELECT * FROM `users`", (err, data) => {
+						if (err) {
+							res.send(`ERROR: ${err}`);
+						} else {
+							res.send(data);
+						}
+					});
 				}
 			});
 		}
