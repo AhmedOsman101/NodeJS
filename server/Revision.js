@@ -19,16 +19,16 @@ http.createServer((req, res) => {
             connection.execute("SELECT * FROM `products`", (err, data) => {
                 if (err) {
                     res.writeHead(404, { "Content-Type": "application/json" });
-                    res.end(`ERROR: ${err}`)
+                    res.end(`ERROR: ${err}`);
                 } else {
                     res.writeHead(200, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify(data))
+                    res.end(JSON.stringify(data));
                 }
             });
-        } else if (req.url=== "/form"){
-            res.end(form)
+        } else if (req.url === "/form") {
+            res.end(form);
         }
-    } else {
+    } else if (req.method === "POST" && req.url === "/submit") {
     }
 }).listen(port, () => {
     console.log(`Server Is Running On http://localhost:${port}`);
