@@ -41,7 +41,6 @@ App.get("/User/:id", (req, res) => {
 });
 
 // Handle POST requests to add users
-// Handle POST requests to add users
 App.post("/User/Add", (req, res) => {
 	const { username, email, password } = req.body;
 	const values = [username, email, password];
